@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CG Exercise 1 - Part A</title>
+    <script type="application/javascript" src="dsliveupdate.js"></script>
+  </head>
+
+  <body>
+    <h3>Student 'Name':Lana Alzbibi</h3>
+     <!--MART. NUMMER: s0579145-->
+     <canvas
+     id="canvas"
+     width="300"
+     height="300"
+     style="border: 1px solid #000000"
+     ></canvas>
+    <script>
+      //Put your javascript here
+      //First Circle
+      let circle = document.getElementById("canvas");
+      let draw = circle.getContext('2d');
+      draw.beginPath();
+      draw.arc(150, 150, 100, 0, 2 * Math.PI);
+      draw.lineWidth ="1";
+      draw.stroke();
+      draw.fillStyle = "green";
+      draw.fill();
+      
+      //sec Circle
+     
+      draw.beginPath();
+      draw.arc(150, 50, 50, 0, 2 * Math.PI);
+      draw.lineWidth ="5";
+      draw.stroke();
+      draw.fillStyle = "red";
+      draw.fill();
+    </script>
+  </body>
+</html>
