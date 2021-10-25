@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CG Exercise 1 - Part A</title>
+    <script type="application/javascript" src="dsliveupdate.js"></script>
+  </head>
+
+  <body>
+    <h3>Student 'Name':Lana Alzbibi</h3>
+    <div id="spot">
+      <div>
+        <h4>Spotify</h4>
+        <label>Track Name/PL-ID </label
+        ><input style="width: 450px" id="track" type="text" /> or
+        <button id="randi" onclick="drawRandom();">RandomSong</button>
+      </div>
+      <img id="spimg" src="" alt="" />
+      <div style="width: 310px; display: inline-block">
+        <h4 id="artistname"></h4>
+        <h4 id="trackname"></h4>
+        <audio loop crossorigin="anonymous" id="audio" controls src=""></audio>
+      </div>
+    </div>
+    <canvas
+      id="canvas"
+      width="400"
+      height="400"
+      style="border: 1px solid #000000"
+      style="background-color: grey"
+    ></canvas>
+    <script src="./webaudiospotify.js"></script>
+
+    <!--work here-->
+
+    <script>
+      //Put your javascript here
+      //Die Werte laufen zwischen -1 und +1
+
+      //drawing
+      let canvas = document.getElementById("canvas");
+      canvas.style.backgroundColor = "#03cffc";
+      let draw = canvas.getContext("2d");
+      let animation;
+
+      function render(time) {
+        let x = 0;
+        let audiodata = getData(analyser, 1024, "wave");
+
+        draw.clearRect(0, 0, canvas.width, canvas.height);
+        draw.beginPath();
+
+        for (let i = 0; i < canvas.width + 10; i++) {
+          //  console.log(audiodata[i])
+          draw.rect(x, canvas.height / 2, 0.5, audiodata[i] * canvas.height);
+          draw.strokeStyle = "yellow";
+          draw.stroke();
+          x++;
+        }
+        animation = requestAnimationFrame(render);
+      }
+      animation = window.requestAnimationFrame(render);
+
+      //PART E
+      draw.globalCompositeOperation = "destination-over";
+
+      function renderE(time) {
+        //holt 1024 aktuelle FFT Daten aus dem abgespielten Audio)
+        let fftData = getData(analyser, 1024, "FFT");
+        let animationE;
+        for (let j = 0; j < 360; j++) {
+          let x = Math.cos(j);
+          let y = Math.sin(j);
+          let xJ = x * fftData[j];
+          let yJ = y * fftData[j];
+
+          draw.beginPath();
+          draw.arc(
+            canvas.width / 2,
+            canvas.width / 2,
+            Math.abs(fftData[j]),
+            xJ,
+            yJ
+          );
+          draw.strokeStyle = "#583A8FFF";
+          draw.stroke();
+        }
+        animationE = requestAnimationFrame(renderE);
+      }
+      animationE = window.requestAnimationFrame(renderE);
+    </script>
+  </body>
+</html>
