@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CG Exercise 1 - Part B</title>
+    <script type="application/javascript" src="dsliveupdate.js"></script>
+  </head>
+  <!--WORK HERE-->
+  <body>
+    <h1>animation!</h1>
+    <canvas
+      id="canvas"
+      width="300"
+      height="300"
+      style="border: 1px solid #000000"
+    ></canvas>
+    <button name="clearButton" type="button" onclick="clearCanvas()">
+      Clear animation
+    </button>
+    <button name="clearButton" type="button" onclick="stop()">
+      stop animation
+    </button>
+    <button name="clearButton" type="button" onclick="render()">
+      continue animation
+    </button>
+
+    <script>
+      let canvas = document.getElementById("canvas");
+      canvas.style.backgroundColor = "#CECC9F4F";
+      let canvasAnimation = canvas.getContext("2d");
+
+      let animation;
+      function render(time) {
+        let rx = Math.random() * 500;
+        let ry = Math.random() * 500;
+        let rz = Math.random() * 1000;
+        let ra = Math.random() * 1000;
+
+        canvasAnimation.beginPath();
+        canvasAnimation.moveTo(rx, ry);
+        canvasAnimation.lineTo(rz, ra);
+        canvasAnimation.stroke();
+        canvasAnimation.fill();
+
+        animation = requestAnimationFrame(render);
+      }
+      animation = window.requestAnimationFrame(render);
+
+      function clearCanvas() {
+        canvasAnimation.clearRect(0, 0, canvas.width, canvas.height);
+      }
+      function stop() {
+        window.cancelAnimationFrame(animation);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>CG Exercise 2 - Part A</title>
+  <script type="application/javascript" src="dsliveupdate.js"></script>
+</head>
+
+<body>
+
+  <h3>Student 'Name':Lana Alzbibi</h3>
+  <script id="dsglinspector" src="http://imiedit.f4.htw-berlin.de::4000/Vorlesung/DS/util/dsglinspector.js"></script>
+  <canvas width="500" height="400"  style="border: 1px solid #000000"  id="ds_draw_here" ></canvas>
+   
+  <script id="ds-vertex" type="notjs">
+    //create the vertexShader
+
+    //creating the positions
+       attribute vec4 "a_position;
+     void main(){
+       gl_Position = a_position;
+     }
+  </script>  
+  <script id="ds-fragment" type="notjs">
+    //create the fragmentShader
+    //create the color
+    precision mediump float;
+    void main(){
+      gl_FragColor = vec4(1, 0, 0.5, 1); 
+    }
+  </script>  
+      
+  <script>
+    init();
+    window.requestAnimationFrame(render);
+
+    function init(){
+
+    
+      
+         var positions = [
+             0, 0,
+             1.0, 0,
+             0, 0.5,
+         ];
+
+      var canvas_ds = document.getElementById('ds_draw_here');
+      //Put your one time initialisation javascript here
+       var gl = canvas_ds.getContext("webgl");
+      var getVertSource = document.getElementById("ds-vertex").innerText;
+      var getFragSource = document.getElementById("ds-fragment").innerText;
+
+      
+      //compile
+        function createShader(gl, type, source) {
+      var shader = gl.createShader(type);
+           gl.shaderSource(shader, source);
+           gl.compileShader(shader);
+
+           return shader
+      }
+     
+
+      // var vertexshader = gl.createShader(gl.VERTEX_SHADER);
+      //  gl.shaderSource(vertexshader, getVertSource);
+      //  gl.compileShader(vertexshader);
+
+       //link C code
+      function createProgram(gl, vertexShader, fragmentShader) {
+       var program = gl.createProgram();
+
+       if(gl){
+         if(program&& createShader){
+           
+            gl.attachShader(program, vertexShader);
+       gl.attachShader(program, fragmentShader);
+         gl.linkProgram(program);
+
+         }
+       }
+      
+         }
+          var vertexShader = createShader(gl,gl.VERTEX_SHADER,getVertSource);
+      var fragmentShader = createShader(gl,gl.FRAGMENT_SHADER,getFragSource);
+          var program = createProgram(gl, vertexShader, fragmentShader);
+
+          
+        var positionAttributeLocation = gl.getAttribLocation(program,"a_position");
+        var positionBuffer = gl.createBuffer();
+         gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+
+          
+
+  
+    }
+
+
+
+    function render(time){
+      //Put your repeatedly drawing code javascript here
+    gl.clearColor(0, 0, 0, 1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+
+    gl.useProgram(program);
+
+    gl.enableVertexAttribArray(positionAttributeLocation);
+
+
+      var size=2; var type= gl.FLOAT; var normalize =false; var stride=0; var offset=0;
+    gl.vertexAttribPointer(positionAttributeLocation,size,type,normalize,stride,offset)
+     gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+      window.requestAnimationFrame(render);
+    }
+  </script>
+</body>
+
+</html>
